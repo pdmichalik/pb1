@@ -7,8 +7,23 @@ import { PropertySection } from './PropertySection';
 import { FileText, Download, Loader2 } from 'lucide-react';
 
 export function PB1Form() {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    // Load saved data from localStorage
+    const savedData = localStorage.getItem('pb1-form-data');
+    const defaultValues = savedData ? JSON.parse(savedData) : {};
+
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+        defaultValues
+    });
     const [loading, setLoading] = useState(false);
+
+    // Watch all fields and save to localStorage
+    const allFields = watch();
+    React.useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            localStorage.setItem('pb1-form-data', JSON.stringify(allFields));
+        }, 500); // Debounce save
+        return () => clearTimeout(timeoutId);
+    }, [allFields]);
 
     const onSubmit = async (data) => {
         setLoading(true);
