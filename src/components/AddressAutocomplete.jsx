@@ -72,42 +72,43 @@ export function AddressAutocomplete({ onSelect, label = "Wyszukaj adres (automat
                 {label}
             </label>
             <div className="relative">
-                <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => {
-                        setQuery(e.target.value);
-                        setIsOpen(true);
-                    }}
-                    placeholder="Wpisz adres (np. Marszałkowska 1, Warszawa)"
-                    className="w-full px-3 py-2 pl-10 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50"
-                />
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500">
-                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
+                <div className="flex items-center w-full border border-blue-300 rounded-md shadow-sm bg-blue-50 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+                    <div className="pl-3 text-blue-500">
+                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
+                    </div>
+                    <input
+                        type="text"
+                        value={query}
+                        onChange={(e) => {
+                            setQuery(e.target.value);
+                            setIsOpen(true);
+                        }}
+                        placeholder="Wpisz adres (np. Marszałkowska 1, Warszawa)"
+                        className="w-full px-3 py-2 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-900 placeholder-gray-500"
+                    />
                 </div>
-            </div>
 
-            {isOpen && results.length > 0 && (
-                <ul
-                    className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-xl max-h-60 overflow-auto divide-y divide-gray-100"
-                    style={{ backgroundColor: 'white' }}
-                >
-                    {results.map((item) => (
-                        <li
-                            key={item.place_id}
-                            onClick={() => handleSelect(item)}
-                            className="px-4 py-3 hover:bg-blue-50 cursor-pointer flex flex-col transition-colors duration-150"
-                        >
-                            <span className="font-medium text-gray-900">
-                                {item.address.road} {item.address.house_number}
-                            </span>
-                            <span className="text-gray-500 text-xs">
-                                {item.address.postcode} {item.address.city || item.address.town || item.address.village}, {item.address.state}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
-    );
+                {isOpen && results.length > 0 && (
+                    <ul
+                        className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-xl max-h-60 overflow-auto divide-y divide-gray-100"
+                        style={{ backgroundColor: 'white' }}
+                    >
+                        {results.map((item) => (
+                            <li
+                                key={item.place_id}
+                                onClick={() => handleSelect(item)}
+                                className="px-4 py-3 hover:bg-blue-50 cursor-pointer flex flex-col transition-colors duration-150"
+                            >
+                                <span className="font-medium text-gray-900">
+                                    {item.address.road} {item.address.house_number}
+                                </span>
+                                <span className="text-gray-500 text-xs">
+                                    {item.address.postcode} {item.address.city || item.address.town || item.address.village}, {item.address.state}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+            );
 }
