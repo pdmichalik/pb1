@@ -1,8 +1,8 @@
-const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
-const fs = require('fs');
-const path = require('path');
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
     console.log('API endpoint called');
 
     if (req.method !== 'POST') {
@@ -13,17 +13,19 @@ module.exports = async function handler(req, res) {
         const data = req.body;
         console.log('Received data:', data);
 
-        const templatePath = path.join(process.cwd(), 'public', 'pb1-template.pdf');
-        console.log('Template path:', templatePath);
-        console.log('File exists:', fs.existsSync(templatePath));
+        // In Vercel, use process.cwd() to get the project root
+        const templatePath = join(process.cwd(), 'public', 'pb1-template.pdf');
+        console.log('Current working directory:', process.cwd());
+        console.log('Attempting to read template from:', templatePath);
 
-        if (!fs.existsSync(templatePath)) {
-            console.error('Template file not found');
-            return res.status(500).json({ error: 'Template not found', path: templatePath });
+        if (!existsSync(templatePath)) {
+            console.error('Template file not found at:', templatePath);
+            return res.status(500).json({ error: `Template file not found at ${templatePath}` });
         }
 
-        const templateBytes = fs.readFileSync(templatePath);
+        const templateBytes = readFileSync(templatePath);
         console.log('Template loaded, size:', templateBytes.length);
+
         const pdfDoc = await PDFDocument.load(templateBytes);
 
         // Get the form from the PDF
@@ -33,19 +35,24 @@ module.exports = async function handler(req, res) {
         try {
             // Fill the fields
             if (data.investorName) {
+                console.log('Filling field "fill_2" with:', data.investorName);
                 const field = form.getTextField('fill_2');
                 field.setText(data.investorName);
             }
 
             if (data.street) {
+                console.log('Filling field "Ulica" with:', data.street);
                 const streetField = form.getTextField('Ulica');
                 streetField.setText(data.street);
             }
 
             if (data.city) {
+                console.log('Filling field "fill_10" with:', data.city);
                 const cityField = form.getTextField('fill_10');
                 cityField.setText(data.city);
             }
+
+            console.log('All fields filled successfully!');
 
         } catch (error) {
             console.error('Error filling form fields:', error);
@@ -66,7 +73,6 @@ module.exports = async function handler(req, res) {
             drawText(data.city || '', 55, height - 195);
         }
 
-
         const pdfBytes = await pdfDoc.save();
         console.log('PDF generated, size:', pdfBytes.length);
 
@@ -77,4 +83,4 @@ module.exports = async function handler(req, res) {
         console.error('Error:', error);
         return res.status(500).json({ error: 'Failed to generate PDF', details: error.message });
     }
-};
+}
