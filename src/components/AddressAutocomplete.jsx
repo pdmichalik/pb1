@@ -88,12 +88,12 @@ export function AddressAutocomplete({ onSelect, label = "Wyszukaj adres (automat
             </div>
 
             {isOpen && results.length > 0 && (
-                <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-xl max-h-60 overflow-auto divide-y divide-gray-100">
                     {results.map((item) => (
                         <li
                             key={item.place_id}
                             onClick={() => handleSelect(item)}
-                            className="px-4 py-2 hover:bg-blue-50 cursor-pointer text-sm border-b last:border-b-0 flex flex-col"
+                            className="px-4 py-3 hover:bg-blue-50 cursor-pointer flex flex-col transition-colors duration-150"
                         >
                             <span className="font-medium text-gray-900">
                                 {item.address.road} {item.address.house_number}
