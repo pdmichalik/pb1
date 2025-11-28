@@ -89,7 +89,12 @@ export function ProxySection({ register, errors }) {
                     register={register}
                     error={errors.proxyPostalCode}
                     placeholder="np. 00-001"
-                    pattern="\\d{2}-\\d{3}"
+                    validation={{
+                        pattern: {
+                            value: /^\d{2}-\d{3}$/,
+                            message: "Format: XX-XXX (np. 00-001)"
+                        }
+                    }}
                 />
             </div>
 
