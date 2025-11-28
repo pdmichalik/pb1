@@ -66,7 +66,7 @@ export function AddressAutocomplete({ onSelect, label = "Wyszukaj adres (automat
     };
 
     return (
-        <div className="mb-6 relative" ref={wrapperRef}>
+        <div className="mb-6 relative z-50" ref={wrapperRef}>
             <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
                 <Search className="w-4 h-4" />
                 {label}
@@ -88,7 +88,10 @@ export function AddressAutocomplete({ onSelect, label = "Wyszukaj adres (automat
             </div>
 
             {isOpen && results.length > 0 && (
-                <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-xl max-h-60 overflow-auto divide-y divide-gray-100">
+                <ul
+                    className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-xl max-h-60 overflow-auto divide-y divide-gray-100"
+                    style={{ backgroundColor: 'white' }}
+                >
                     {results.map((item) => (
                         <li
                             key={item.place_id}
