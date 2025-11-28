@@ -1,10 +1,19 @@
 import React from 'react';
 import { Input } from './Input';
 import { Section } from './Section';
+import { AddressAutocomplete } from './AddressAutocomplete';
 
-export function PropertySection({ register, errors }) {
+export function PropertySection({ register, errors, setValue }) {
+    const handleAddressSelect = (address) => {
+        if (address.voivodeship) setValue('propertyVoivodeship', address.voivodeship);
+        if (address.county) setValue('propertyCounty', address.county);
+        // Property section is specific, we might want to put street/city into investment name or just leave it
+    };
+
     return (
         <Section title="4. DANE NIERUCHOMOŚCI">
+            <AddressAutocomplete onSelect={handleAddressSelect} label="Wyszukaj lokalizację nieruchomości" />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                     label="Województwo"

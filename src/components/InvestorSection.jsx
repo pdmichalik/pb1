@@ -1,10 +1,25 @@
 import React from 'react';
 import { Input } from './Input';
 import { Section } from './Section';
+import { AddressAutocomplete } from './AddressAutocomplete';
 
-export function InvestorSection({ register, errors }) {
+export function InvestorSection({ register, errors, setValue }) {
+    const handleAddressSelect = (address) => {
+        // Auto-fill fields based on selection
+        if (address.street) setValue('street', address.street);
+        if (address.houseNumber) setValue('houseNumber', address.houseNumber);
+        if (address.city) setValue('city', address.city);
+        if (address.postalCode) setValue('postalCode', address.postalCode);
+        if (address.voivodeship) setValue('voivodeship', address.voivodeship);
+        if (address.county) setValue('county', address.county);
+        if (address.municipality) setValue('municipality', address.municipality);
+        if (address.country) setValue('country', address.country);
+    };
+
     return (
         <Section title="2.1. DANE INWESTORA">
+            <AddressAutocomplete onSelect={handleAddressSelect} />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                     label="Nazwa (dla firm)"

@@ -1,10 +1,24 @@
 import React from 'react';
 import { Input } from './Input';
 import { Section } from './Section';
+import { AddressAutocomplete } from './AddressAutocomplete';
 
-export function ProxySection({ register, errors }) {
+export function ProxySection({ register, errors, setValue }) {
+    const handleAddressSelect = (address) => {
+        if (address.street) setValue('proxyStreet', address.street);
+        if (address.houseNumber) setValue('proxyHouseNumber', address.houseNumber);
+        if (address.city) setValue('proxyCity', address.city);
+        if (address.postalCode) setValue('proxyPostalCode', address.postalCode);
+        if (address.voivodeship) setValue('proxyVoivodeship', address.voivodeship);
+        if (address.county) setValue('proxyCounty', address.county);
+        if (address.municipality) setValue('proxyMunicipality', address.municipality);
+        if (address.country) setValue('proxyCountry', address.country);
+    };
+
     return (
         <Section title="3. DANE PEŁNOMOCNIKA">
+            <AddressAutocomplete onSelect={handleAddressSelect} label="Wyszukaj adres pełnomocnika" />
+
             <Input
                 label="Imię i nazwisko"
                 name="proxyName"

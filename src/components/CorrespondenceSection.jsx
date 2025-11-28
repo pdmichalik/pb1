@@ -1,11 +1,25 @@
 import React from 'react';
 import { Input } from './Input';
 import { Section } from './Section';
+import { AddressAutocomplete } from './AddressAutocomplete';
 
-export function CorrespondenceSection({ register, errors }) {
+export function CorrespondenceSection({ register, errors, setValue }) {
+    const handleAddressSelect = (address) => {
+        if (address.street) setValue('corrStreet', address.street);
+        if (address.houseNumber) setValue('corrHouseNumber', address.houseNumber);
+        if (address.city) setValue('corrCity', address.city);
+        if (address.postalCode) setValue('corrPostalCode', address.postalCode);
+        if (address.voivodeship) setValue('corrVoivodeship', address.voivodeship);
+        if (address.county) setValue('corrCounty', address.county);
+        if (address.municipality) setValue('corrMunicipality', address.municipality);
+        if (address.country) setValue('corrCountry', address.country);
+    };
+
     return (
         <Section title="2.2. DANE DO KORESPONDENCJI">
             <p className="text-sm text-gray-500 mb-4">Wypełnij tylko jeśli jest inny niż adres inwestora</p>
+
+            <AddressAutocomplete onSelect={handleAddressSelect} label="Wyszukaj adres do korespondencji" />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Input

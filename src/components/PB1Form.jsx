@@ -7,7 +7,7 @@ import { PropertySection } from './PropertySection';
 import { FileText, Download, Loader2 } from 'lucide-react';
 
 export function PB1Form() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async (data) => {
@@ -50,10 +50,10 @@ export function PB1Form() {
                 <p className="text-gray-600 mt-2">Generator wniosku o pozwolenie na budowę</p>
             </div>
 
-            <InvestorSection register={register} errors={errors} />
-            <CorrespondenceSection register={register} errors={errors} />
-            <ProxySection register={register} errors={errors} />
-            <PropertySection register={register} errors={errors} />
+            <InvestorSection register={register} errors={errors} setValue={setValue} />
+            <CorrespondenceSection register={register} errors={errors} setValue={setValue} />
+            <ProxySection register={register} errors={errors} setValue={setValue} />
+            <PropertySection register={register} errors={errors} setValue={setValue} />
 
             <div className="flex justify-end mt-6">
                 <button
