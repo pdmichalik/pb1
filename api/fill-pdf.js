@@ -24,23 +24,48 @@ module.exports = async function handler(req, res) {
 
         const templateBytes = fs.readFileSync(templatePath);
         console.log('Template loaded, size:', templateBytes.length);
-
         const pdfDoc = await PDFDocument.load(templateBytes);
-        const pages = pdfDoc.getPages();
-        const firstPage = pages[0];
-        const { height } = firstPage.getSize();
 
-        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        // Get the form from the PDF
+        const form = pdfDoc.getForm();
 
-        const drawText = (text, x, y) => {
-            if (text) {
-                firstPage.drawText(text, { x, y, size: 10, font, color: rgb(0, 0, 0) });
+        // Fill form fields by name
+        try {
+            // Fill the fields
+            if (data.investorName) {
+                const field = form.getTextField('fill_2');
+                field.setText(data.investorName);
             }
-        };
 
-        drawText(data.investorName || '', 55, height - 115);
-        drawText(data.street || '', 55, height - 155);
-        drawText(data.city || '', 55, height - 195);
+            if (data.street) {
+                const streetField = form.getTextField('Ulica');
+                streetField.setText(data.street);
+            }
+
+            if (data.city) {
+                const cityField = form.getTextField('fill_10');
+                cityField.setText(data.city);
+            }
+
+        } catch (error) {
+            console.error('Error filling form fields:', error);
+            // Fallback to coordinate-based drawing
+            const pages = pdfDoc.getPages();
+            const firstPage = pages[0];
+            const { height } = firstPage.getSize();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+            const drawText = (text, x, y) => {
+                if (text) {
+                    firstPage.drawText(text, { x, y, size: 10, font, color: rgb(0, 0, 0) });
+                }
+            };
+
+            drawText(data.investorName || '', 55, height - 115);
+            drawText(data.street || '', 55, height - 155);
+            drawText(data.city || '', 55, height - 195);
+        }
+
 
         const pdfBytes = await pdfDoc.save();
         console.log('PDF generated, size:', pdfBytes.length);
