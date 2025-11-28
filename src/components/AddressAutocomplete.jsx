@@ -82,7 +82,7 @@ export function AddressAutocomplete({ onSelect, label = "Wyszukaj adres (automat
                     placeholder="Wpisz adres (np. Marszałkowska 1, Warszawa)"
                     className="w-full px-3 py-2 pl-10 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50"
                 />
-                <div className="absolute left-3 top-2.5 text-blue-500">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500">
                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
                 </div>
             </div>
