@@ -110,5 +110,6 @@ export function AddressAutocomplete({ onSelect, label = "Wyszukaj adres (automat
                     </ul>
                 )}
             </div>
-            );
+        </div>
+    );
 }
