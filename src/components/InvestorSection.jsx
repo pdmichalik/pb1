@@ -5,15 +5,15 @@ import { AddressAutocomplete } from './AddressAutocomplete';
 
 export function InvestorSection({ register, errors, setValue }) {
     const handleAddressSelect = (address) => {
-        // Auto-fill fields based on selection
-        if (address.street) setValue('street', address.street);
-        if (address.houseNumber) setValue('houseNumber', address.houseNumber);
-        if (address.city) setValue('city', address.city);
-        if (address.postalCode) setValue('postalCode', address.postalCode);
-        if (address.voivodeship) setValue('voivodeship', address.voivodeship);
-        if (address.county) setValue('county', address.county);
-        if (address.municipality) setValue('municipality', address.municipality);
-        if (address.country) setValue('country', address.country);
+        // Auto-fill fields based on selection, clearing if empty
+        setValue('street', address.street || '');
+        setValue('houseNumber', address.houseNumber || '');
+        setValue('city', address.city || '');
+        setValue('postalCode', address.postalCode || '');
+        setValue('voivodeship', address.voivodeship || '');
+        setValue('county', address.county || '');
+        setValue('municipality', address.municipality || '');
+        setValue('country', address.country || 'Polska');
     };
 
     return (

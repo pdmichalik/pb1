@@ -5,14 +5,14 @@ import { AddressAutocomplete } from './AddressAutocomplete';
 
 export function ProxySection({ register, errors, setValue }) {
     const handleAddressSelect = (address) => {
-        if (address.street) setValue('proxyStreet', address.street);
-        if (address.houseNumber) setValue('proxyHouseNumber', address.houseNumber);
-        if (address.city) setValue('proxyCity', address.city);
-        if (address.postalCode) setValue('proxyPostalCode', address.postalCode);
-        if (address.voivodeship) setValue('proxyVoivodeship', address.voivodeship);
-        if (address.county) setValue('proxyCounty', address.county);
-        if (address.municipality) setValue('proxyMunicipality', address.municipality);
-        if (address.country) setValue('proxyCountry', address.country);
+        setValue('proxyStreet', address.street || '');
+        setValue('proxyHouseNumber', address.houseNumber || '');
+        setValue('proxyCity', address.city || '');
+        setValue('proxyPostalCode', address.postalCode || '');
+        setValue('proxyVoivodeship', address.voivodeship || '');
+        setValue('proxyCounty', address.county || '');
+        setValue('proxyMunicipality', address.municipality || '');
+        setValue('proxyCountry', address.country || 'Polska');
     };
 
     return (

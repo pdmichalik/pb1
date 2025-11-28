@@ -5,8 +5,8 @@ import { AddressAutocomplete } from './AddressAutocomplete';
 
 export function PropertySection({ register, errors, setValue }) {
     const handleAddressSelect = (address) => {
-        if (address.voivodeship) setValue('propertyVoivodeship', address.voivodeship);
-        if (address.county) setValue('propertyCounty', address.county);
+        setValue('propertyVoivodeship', address.voivodeship || '');
+        setValue('propertyCounty', address.county || '');
         // Property section is specific, we might want to put street/city into investment name or just leave it
     };
 

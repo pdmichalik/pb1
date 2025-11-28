@@ -5,14 +5,14 @@ import { AddressAutocomplete } from './AddressAutocomplete';
 
 export function CorrespondenceSection({ register, errors, setValue }) {
     const handleAddressSelect = (address) => {
-        if (address.street) setValue('corrStreet', address.street);
-        if (address.houseNumber) setValue('corrHouseNumber', address.houseNumber);
-        if (address.city) setValue('corrCity', address.city);
-        if (address.postalCode) setValue('corrPostalCode', address.postalCode);
-        if (address.voivodeship) setValue('corrVoivodeship', address.voivodeship);
-        if (address.county) setValue('corrCounty', address.county);
-        if (address.municipality) setValue('corrMunicipality', address.municipality);
-        if (address.country) setValue('corrCountry', address.country);
+        setValue('corrStreet', address.street || '');
+        setValue('corrHouseNumber', address.houseNumber || '');
+        setValue('corrCity', address.city || '');
+        setValue('corrPostalCode', address.postalCode || '');
+        setValue('corrVoivodeship', address.voivodeship || '');
+        setValue('corrCounty', address.county || '');
+        setValue('corrMunicipality', address.municipality || '');
+        setValue('corrCountry', address.country || 'Polska');
     };
 
     return (
