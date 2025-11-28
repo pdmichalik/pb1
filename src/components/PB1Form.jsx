@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Input } from './Input';
-import { Section } from './Section';
+import { InvestorSection } from './InvestorSection';
+import { CorrespondenceSection } from './CorrespondenceSection';
+import { ProxySection } from './ProxySection';
+import { PropertySection } from './PropertySection';
 import { FileText, Download, Loader2 } from 'lucide-react';
 
 export function PB1Form() {
@@ -39,7 +41,7 @@ export function PB1Form() {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto p-4">
             <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
                     <FileText className="w-8 h-8 text-blue-600" />
@@ -48,30 +50,12 @@ export function PB1Form() {
                 <p className="text-gray-600 mt-2">Generator wniosku o pozwolenie na budowę</p>
             </div>
 
-            <Section title="Dane Inwestora">
-                <Input
-                    label="Imię i nazwisko / Nazwa"
-                    name="investorName"
-                    register={register}
-                    placeholder="np. Jan Kowalski"
-                />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                        label="Ulica"
-                        name="street"
-                        register={register}
-                        placeholder="np. Polna 1"
-                    />
-                    <Input
-                        label="Miejscowość"
-                        name="city"
-                        register={register}
-                        placeholder="np. Warszawa"
-                    />
-                </div>
-            </Section>
+            <InvestorSection register={register} errors={errors} />
+            <CorrespondenceSection register={register} errors={errors} />
+            <ProxySection register={register} errors={errors} />
+            <PropertySection register={register} errors={errors} />
 
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-6">
                 <button
                     type="submit"
                     disabled={loading}

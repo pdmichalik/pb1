@@ -1,42 +1,65 @@
 const { PDFDocument } = require('pdf-lib');
+const fontkit = require('@pdf-lib/fontkit');
 const fs = require('fs');
 
 async function testFillPDF() {
     const templatePath = './public/pb1-template.pdf';
+    const fontPath = './public/fonts/Ubuntu-R.ttf';
+
     const templateBytes = fs.readFileSync(templatePath);
+    const fontBytes = fs.readFileSync(fontPath);
+
     const pdfDoc = await PDFDocument.load(templateBytes);
+    pdfDoc.registerFontkit(fontkit);
+    const customFont = await pdfDoc.embedFont(fontBytes);
 
     const form = pdfDoc.getForm();
 
-    console.log('\n=== Testing Form Field Filling ===\n');
+    console.log('\n=== Testing Full Form Field Filling with Custom Font ===\n');
+
+    // Helper
+    function fill(name, value) {
+        try {
+            const field = form.getTextField(name);
+            field.setText(value);
+            field.updateAppearances(customFont);
+            console.log(`✓ Filled "${name}" with "${value}"`);
+        } catch (e) {
+            console.error(`✗ Failed to fill "${name}": ${e.message}`);
+        }
+    }
 
     try {
-        console.log('1. Attempting to fill field "fill_2"...');
-        const field1 = form.getTextField('fill_2');
-        field1.setText('Jan Kowalski - TEST');
-        console.log('   ✓ Success!\n');
+        console.log('--- Section 1: Investor ---');
+        fill('Nazwa', 'Firma ABC');
+        fill('fill_2', 'Jan Kowalski');
+        fill('Kraj', 'Polska');
+        fill('Województwo', 'Mazowieckie');
+        fill('Ulica', 'Polna');
+        fill('Nr domu', '1');
+        fill('fill_10', 'Warszawa');
 
-        console.log('2. Attempting to fill field "Ulica"...');
-        const field2 = form.getTextField('Ulica');
-        field2.setText('Polna 1 - TEST');
-        console.log('   ✓ Success!\n');
+        console.log('\n--- Section 2: Correspondence ---');
+        fill('Kraj_2', 'Polska');
+        fill('Województwo_2', 'Małopolskie');
+        fill('fill_22', 'Kraków'); // City
+        fill('Ulica_2', 'Wawelska');
 
-        console.log('3. Attempting to fill field "fill_10"...');
-        const field3 = form.getTextField('fill_10');
-        field3.setText('Warszawa - TEST');
-        console.log('   ✓ Success!\n');
+        console.log('\n--- Section 3: Proxy ---');
+        fill('nazwisko', 'Anna Nowak');
+        fill('fill_34', 'Gdańsk'); // City
 
-        console.log('=== All fields filled successfully! ===\n');
+        console.log('\n--- Section 4: Property ---');
+        fill('fill_38', 'Mazowieckie'); // Voivodeship
+        fill('5 NAZWA ZAMIERZENIA BUDOWLANEGO1', 'Budowa domu jednorodzinnego');
 
         const pdfBytes = await pdfDoc.save();
-        fs.writeFileSync('/tmp/test-filled.pdf', pdfBytes);
-        console.log('Saved test PDF to: /tmp/test-filled.pdf\n');
+        fs.writeFileSync('/tmp/test-full-filled.pdf', pdfBytes);
+        console.log('\n=== Success! Saved to /tmp/test-full-filled.pdf ===\n');
 
     } catch (error) {
         console.error('!!! ERROR !!!');
-        console.error('Type:', error.constructor.name);
-        console.error('Message:', error.message);
-        console.error('Stack:', error.stack);
+        console.error(error);
     }
 }
 
